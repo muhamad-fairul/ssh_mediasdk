@@ -30,9 +30,9 @@ RUN stat -c "%G" /dev/dri/render*
 RUN groups ${USER}
 
 #Run mediasdk example
-ADD ***video*** /mediasdk
+ADD head-pose-face-detection-female-and-male.mp4 /mediasdk
 RUN ffmpeg \
-    -i big_buck_bunny_480p_h264.mov \
+    -i head-pose-face-detection-female-and-male.mp4 \
     -an -vcodec copy -bsf h264_mp4toannexb \
     -f h264 bbb1920x1080.264
 
