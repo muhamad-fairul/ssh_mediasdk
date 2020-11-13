@@ -16,8 +16,7 @@ RUN mkdir /mediasdk
 WORKDIR /mediasdk
 RUN apt-get install -y gpg-agent wget
 RUN wget -qO - https://repositories.intel.com/graphics/intel-graphics.key | apt-key add -
-RUN apt-add-repository \
-  'deb [arch=amd64] https://repositories.intel.com/graphics/ubuntu bionic main'
+RUN apt-add-repository 'deb [arch=amd64] https://repositories.intel.com/graphics/ubuntu bionic main'
 
 #Install run-time packages for dev
 RUN apt-get update
