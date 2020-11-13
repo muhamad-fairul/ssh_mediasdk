@@ -27,8 +27,8 @@ RUN apt-get -y install \
     intel-level-zero-gpu level-zero
     
 #add configuring profile
-RUN gpasswd -a ${USER} render
-RUN newgrp render
+#RUN gpasswd -a ${USER} render
+#RUN newgrp render
 
 #Run mediasdk example
 ADD head-pose-face-detection-female-and-male.mp4 /mediasdk
