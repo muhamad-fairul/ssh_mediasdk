@@ -26,9 +26,9 @@ RUN apt-get -y install \
     intel-opencl \
     intel-level-zero-gpu level-zero
     
-#view correct permission
-RUN stat -c "%G" /dev/dri/render*
-RUN groups ${USER}
+#add configuring profile
+RUN gpasswd -a ${USER} render
+RUN newgrp render
 
 #Run mediasdk example
 ADD head-pose-face-detection-female-and-male.mp4 /mediasdk
