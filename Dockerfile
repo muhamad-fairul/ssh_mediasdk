@@ -43,7 +43,7 @@ RUN ffmpeg \
 
 #decode to raw YUV format using ffmpeg
 RUN ffmpeg -i bbb1920x1080.264 bbb1920x1080.yuv
-RUN ffmpeg sample_decode h264 -i bbb1920x1080.264 bbb1920x1080.yuv
+#RUN ffmpeg sample_decode h264 -i bbb1920x1080.264 bbb1920x1080.yuv
 RUN ls
 
 EXPOSE 22
