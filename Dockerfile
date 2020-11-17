@@ -45,7 +45,7 @@ RUN ffmpeg \
 RUN ffmpeg -i bbb1920x1080.264 bbb1920x1080.yuv
 RUN ffmpeg -decoders
 #RUN sample_decode h264 -i bbb1920x1080 -o bbb1920x1080.yuv
-RUN ll
+RUN ls
 
 EXPOSE 22
 CMD ["/usr/sbin/sshd", "-D"]
