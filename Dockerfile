@@ -1,9 +1,15 @@
 FROM ubuntu:18.04
 
 RUN apt-get update && apt-get install -y openssh-server
-RUN apt-get install -y git build-essential
+#RUN apt-get install -y git build-essential
 RUN apt-get install -y software-properties-common
-RUN apt-get update
+RUN apt-get install -y mesa-va-drivers
+RUN apt-get install -y libdrm-dev
+RUN apt-get install -y vainfo
+RUN apt-get install -y git build-essential gcc make yasm autoconf automake cmake libtool checkinstall wget software-properties-common pkg-config libmp3lame-dev libunwind-dev zlib1g-dev libssl-dev
+RUN apt-get update \
+    && apt-get clean \
+    && apt-get install -y --no-install-recommends libc6-dev libgdiplus wget software-properties-common
 RUN mkdir /var/run/sshd
 RUN echo 'root:Intel123!' | chpasswd
 RUN sed -i 's/#*PermitRootLogin prohibit-password/PermitRootLogin yes/g' /etc/ssh/sshd_config
@@ -15,23 +21,21 @@ ENV NOTVISIBLE="in users profile"
 RUN echo "export VISIBLE=now" >> /etc/profile
 
 RUN mkdir /mediasdk
-WORKDIR /mediasdk
-RUN apt-get install -y gpg-agent wget
-RUN wget -qO - https://repositories.intel.com/graphics/intel-graphics.key | apt-key add -
-RUN apt-add-repository 'deb [arch=amd64] https://repositories.intel.com/graphics/ubuntu bionic main'
-
-#Install run-time packages for dev
-RUN apt-get update
-RUN apt-get -y install \
-    intel-opencl \
-    intel-level-zero-gpu level-zero
-    
-#add configuring profile
-#RUN gpasswd -a ${USER} render
-#RUN newgrp render
+WORKDIR mediasdk
+RUN export GST_VAAPI_ALL_DRIVERS=1
+RUN export LIBVA_DRIVER_NAME=iHD
+RUN export LIBVA_DRIVERS_PATH=/usr/lib/x86_64-linux-gnu/dri
+RUN wget https://www.ffmpeg.org/releases/ffmpeg-4.0.2.tar.gz
+RUN tar -xzf ffmpeg-4.0.2.tar.gz 
+RUN cd ffmpeg-4.0.2
+RUN ls
+RUN ./ffmpeg-4.0.2/configure --enable-gpl --enable-libmp3lame --enable-decoder=mjpeg,png --enable-encoder=png
+RUN make
+RUN make install
 
 #Run mediasdk example
 ADD head-pose-face-detection-female-and-male.mp4 /mediasdk
+WORKDIR /mediasdk
 RUN ffmpeg \
     -i head-pose-face-detection-female-and-male.mp4 \
     -an -vcodec copy -bsf h264_mp4toannexb \
